@@ -1,0 +1,20 @@
+*[class^="coll-wrapper-"], *[class^="acc-wrapper-"] { position: relative;}
+*[class^="coll-btn-"], *[class^="acc-btn-"] { cursor: pointer;}
+*[class^="coll-content-"], *[class^="acc-content-"]{
+	display: none;
+}
+*[class^="coll-content-"].displayed, *[class^="acc-content-"].displayed{
+	display: block;
+}
+*[class^="coll-content-"].before-collapsing, *[class^="acc-content-"].before-collapsing{
+	position: absolute;
+	visibility: hidden;
+	display: block;
+}
+*[class^="coll-content-"].collapsing, *[class^="acc-content-"].collapsing{
+	position: static;
+    height: 0;
+    overflow: hidden;
+    display: block;
+    transition: $transition;
+}
