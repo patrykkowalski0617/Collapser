@@ -65,18 +65,32 @@ class Collapser extends CollapserMaster{
 		const tt = this;
 
 		tt.display = function(t){
-			console.log('disp')
-			const content = tt.findContent(t);
+			const content = tt.findContent(t),
+			fromHiddenState = function(){
+				tt.elConstHeight = []
+				tt.elConstHeight.push(tt.getElProperty.height(content));
+				tt.collapsing.step1and2(content, tt.elConstHeight[0], 'add');
+			},
+			fromCollapsingState = function(){
+				clearTimeout(tt.collapsing.timeout2)
+				tt.collapsing.step1and2(content, tt.elConstHeight[0], 'add');
+			};
 			if(!content.classList.contains('displayed')){
 				if (!content.classList.contains('collapsing')) {
-					tt.elConstHeight = []
-					tt.elConstHeight.push(tt.getElProperty.height(content));
-					tt.collapsing.step1and2(content, tt.elConstHeight[0], 'add');
+					fromHiddenState()
 				}
 				else{
-					clearTimeout(tt.collapsing.timeout2)
-					tt.collapsing.step1and2(content, tt.elConstHeight[0], 'add');
+					fromCollapsingState()
 				}
+			}
+			else{ // dbl check / prevent lags with removing class displayed
+				let t;
+				clearTimeout(t)
+				t = setTimeout(function(){
+					if(!content.classList.contains('displayed')){
+						fromHiddenState()
+					}
+				},300)
 			}
 		};
 		tt.findDisplayedNastedConted = function(t){
