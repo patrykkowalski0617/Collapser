@@ -6,8 +6,22 @@ class CollapserMaster{
 		tt.q = function(selector, origin = document){ return origin.querySelector(selector) };
 		tt.btn = tt.qA(btn);
 		tt.content = content;
-		tt.findContent = function(sibling){
-			return tt.q(content, sibling.parentElement)
+		tt.findContent = function(el){
+			const wrapper = function(){return el.classList.contains('coll-wrapper')},
+			btn = function(){
+				const classL = el.classList
+				for (let i = 0; i < classL.length; i++) {
+					if (classL.item(i).includes('coll-btn')
+						|| classL.item(i).includes('acc-btn')) { return el; }
+				}
+			};
+
+			if (wrapper()) {
+				return tt.q(content, el)
+			}
+			else if (btn()){
+				return tt.q(content, el.parentElement)
+			}
 		};
 		tt.findWrapper = function(children){
 			let wrappers = []
@@ -34,24 +48,23 @@ class CollapserMaster{
 			}
 		},
 		tt.collapsing = {
-			timeout1: null,
-			timeout2: null,
-			step2(el, method){
+			timeoutAddHeight: null,
+			timeoutRemoveHeight: null,
+			removeCollapsing(el, method){
 				const time = tt.getElProperty.transitionTime(el);
-				this.timeout2 = setTimeout(function(){
+				this.timeoutRemoveHeight = setTimeout(function(){
 					el.classList.remove('collapsing')
 					el.classList[method]('displayed')
 					el.style.height = ''
 				}, time);
 			},
-			step1and2(el, height, method){
+			addCollapsing(el, height, method){
 				el.classList.add('collapsing')
-				clearTimeout(this.timeout1)
-				this.timeout1 = setTimeout(function(){
+				this.timeoutAddHeight = setTimeout(function(){
 					el.style.height = height + 'px';
 				}, 0);
 				
-				this.step2(el, method)
+				this.removeCollapsing(el, method)
 			}
 		};
 		tt.elConstHeight = [];
@@ -69,11 +82,11 @@ class Collapser extends CollapserMaster{
 			fromHiddenState = function(){
 				tt.elConstHeight = []
 				tt.elConstHeight.push(tt.getElProperty.height(content));
-				tt.collapsing.step1and2(content, tt.elConstHeight[0], 'add');
+				tt.collapsing.addCollapsing(content, tt.elConstHeight[0], 'add');
 			},
 			fromCollapsingState = function(){
-				clearTimeout(tt.collapsing.timeout2)
-				tt.collapsing.step1and2(content, tt.elConstHeight[0], 'add');
+				clearTimeout(tt.collapsing.timeoutRemoveHeight);
+				tt.collapsing.addCollapsing(content, tt.elConstHeight[0], 'add');
 			};
 			if(!content.classList.contains('displayed')){
 				if (!content.classList.contains('collapsing')) {
@@ -90,40 +103,37 @@ class Collapser extends CollapserMaster{
 					if(!content.classList.contains('displayed')){
 						fromHiddenState()
 					}
-				},300)
+				}, 400)
 			}
 		};
-		tt.findDisplayedNastedConted = function(t){
-			return tt.q('.coll-nasted .displayed', t.parentElement)
-		};
-		tt.contentIsDisplayed = function(t){
-			return t.querySelector('.displayed')
+		tt.hide = {
+			hiding(t, onDisplayedOnly, content){
+				const height = tt.getElProperty.height(content, false);
+				if (!onDisplayedOnly && !tt.q('.displayed', t)) {
+					clearTimeout(tt.collapsing.timeoutRemoveHeight);
+				}
+				content.style.height = height + 'px';
+				tt.collapsing.addCollapsing(content, 0, 'remove');
+			},
+			currentContent(t, onDisplayedOnly = false){
+				const content = tt.findContent(t);
+				this.hiding(t, onDisplayedOnly, content);
+			},
+			nastedContent(t, onDisplayedOnly = false){
+				const content = tt.q('.coll-nasted .displayed', t.parentElement);
+				if(content){ this.hiding(t, onDisplayedOnly, content) }
+			}
 		}
-		tt.hide = function(t, content, toggle = false){
-			const height = tt.getElProperty.height(content, false);
-
-			if (!tt.contentIsDisplayed(t) && !toggle) {
-				clearTimeout(tt.collapsing.timeout2);
-			}
-			
-			content.style.height = height + 'px';
-			tt.collapsing.step1and2(content, 0, 'remove');
-		};
 		tt.toggle = function(t){
 			const content = tt.findContent(t);
 			if(!content.classList.contains('displayed') && !content.classList.contains('collapsing')) {
 				tt.display(t)
 			}
 			else if(!content.classList.contains('collapsing')){
-				
-				const contentIsDisplayed = tt.findDisplayedNastedConted(t);
+				tt.hide.nastedContent(t, true)
 
-				if(contentIsDisplayed){
-					tt.hide(t, contentIsDisplayed, true)
-				}
-				
 				setTimeout(function(){
-					tt.hide(t, tt.findContent(t), true)
+					tt.hide.currentContent(t, true)
 				}, 0)
 			}
 		};
@@ -140,7 +150,7 @@ class CollapserHover extends Collapser{
 			tt.display(this);
 		});
 		tt.addListener(tt.findWrapper(tt.btn), 'mouseleave', function(){
-			tt.hide(this, tt.findContent(this));
+			tt.hide.currentContent(this);
 		});
 		tt.addListener(tt.btn, 'touchend', function(){
 			tt.toggle(this);
@@ -160,19 +170,42 @@ class CollapserClick extends Collapser{
 	}
 }
 
-class AccordionHover extends CollapserMaster{
+class AccordionHover extends Collapser{
 	constructor(btn, content){
 		super(btn, content)
+
+		const tt = this;
+
+		tt.addListener(tt.btn, 'mouseenter', function(){
+			const content = tt.findContent(this);
+			if(!content.classList.contains('displayed') && !content.classList.contains('collapsing')) {
+				const content = tt.q('.displayed', this.parentElement.parentElement),
+				collapsingContent = Array.from(tt.qA('.collapsing', this.parentElement.parentElement))
+				
+				if (!collapsingContent.length) {
+					tt.display(this)
+				}
+
+				tt.hide.hiding(this, true, content)
+			}
+		});
+		
 	}
 }
 
-class AccordionClick extends CollapserMaster{
-	constructor(btn, content){
-		super(btn, content)
-	}
-}
+// class AccordionClick extends Collapser{
+// 	constructor(btn, content){
+// 		super(btn, content)
 
-const collapserHover = new CollapserHover('.coll-btn-hover', '.coll-content-hover');
-const collapserClick = new CollapserClick('.coll-btn-click', '.coll-content-click');
-const accordionHover = new AccordionHover('.acc-btn-hover', '.acc-content-hover');
-const accordionClick = new AccordionClick('.acc-btn-click', '.acc-content-click');
+// 		const tt = this;
+		
+// 		// tt.addListener(tt.btn, 'click', function(){
+// 		// 	tt.toggle(this);
+// 		// });
+// 	}
+// }
+
+const collapserHover = new CollapserHover('.coll-btn-hover', '.coll-content');
+const collapserClick = new CollapserClick('.coll-btn-click', '.coll-content');
+const accordionHover = new AccordionHover('.acc-btn-hover', '.coll-content');
+// const accordionClick = new AccordionClick('.coll-btn-click', '.coll-content');

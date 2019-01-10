@@ -13,8 +13,8 @@ $transition: .5s ease;
 
 @import 'collapser';
 
-*[class^="coll-btn-"], *[class^="acc-btn-"] { background: salmon;}
-*[class^="coll-content-"], *[class^="acc-content-"]{
+*[class*="coll-btn"], *[class*="acc-btn"] { background: salmon;}
+*[class*="coll-conten"], *[class*="coll-content"]{
 	background: darkcyan;
 }
 
@@ -34,7 +34,7 @@ h1{ margin-bottom: 10px; }
 
 section {padding: $space3 0 $space6 0}
 
-*[class^="col-"]{ display: block; float: left; padding: $space6; }
+*[class*="col-"]{ display: block; float: left; padding: $space6; }
 
 .col-1{	width: 8.33% }
 .col-2{	width: 16.66% }
