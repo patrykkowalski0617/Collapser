@@ -107,7 +107,7 @@ class Collapser extends CollapserMaster{
 			}
 		};
 		tt.hide = {
-			hiding(t, onDisplayedOnly, content){
+			specifiedContent(t, onDisplayedOnly, content){
 				const height = tt.getElProperty.height(content, false);
 				if (!onDisplayedOnly && !tt.q('.displayed', t)) {
 					clearTimeout(tt.collapsing.timeoutRemoveHeight);
@@ -117,11 +117,11 @@ class Collapser extends CollapserMaster{
 			},
 			currentContent(t, onDisplayedOnly = false){
 				const content = tt.findContent(t);
-				this.hiding(t, onDisplayedOnly, content);
+				this.specifiedContent(t, onDisplayedOnly, content);
 			},
 			nastedContent(t, onDisplayedOnly = false){
 				const content = tt.q('.coll-nasted .displayed', t.parentElement);
-				if(content){ this.hiding(t, onDisplayedOnly, content) }
+				if(content){ this.specifiedContent(t, onDisplayedOnly, content) }
 			}
 		}
 		tt.toggle = function(t){
@@ -186,26 +186,28 @@ class AccordionHover extends Collapser{
 					tt.display(this)
 				}
 
-				tt.hide.hiding(this, true, content)
+				tt.hide.specifiedContent(this, true, content)
 			}
 		});
 		
 	}
 }
 
-// class AccordionClick extends Collapser{
-// 	constructor(btn, content){
-// 		super(btn, content)
+class AccordionClick extends Collapser{
+	constructor(btn, content){
+		super(btn, content)
 
-// 		const tt = this;
+		const tt = this;
 		
-// 		// tt.addListener(tt.btn, 'click', function(){
-// 		// 	tt.toggle(this);
-// 		// });
-// 	}
-// }
+		tt.addListener(tt.btn, 'click', function(){
+			const contentDisplayed = tt.q('.displayed', this.parentElement.parentElement);
+			tt.hide.specifiedContent(this, true, contentDisplayed)
+			tt.display(this);
+		});
+	}
+}
 
 const collapserHover = new CollapserHover('.coll-btn-hover', '.coll-content');
 const collapserClick = new CollapserClick('.coll-btn-click', '.coll-content');
 const accordionHover = new AccordionHover('.acc-btn-hover', '.coll-content');
-// const accordionClick = new AccordionClick('.coll-btn-click', '.coll-content');
+const accordionClick = new AccordionClick('.acc-btn-click', '.coll-content');
