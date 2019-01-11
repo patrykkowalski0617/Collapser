@@ -1,17 +1,17 @@
-*[class*="coll-wrapper"], *[class*="coll-wrapper"] { position: relative;}
+*[class*="coll-wrapper"] { position: relative;}
 *[class*="coll-btn"], *[class*="acc-btn"] { cursor: pointer;}
-*[class*="coll-content"], *[class*="coll-content"]{
+*[class*="coll-content-wrapper"]{
 	display: none;
 }
-*[class*="coll-content"].displayed, *[class*="coll-content"].displayed{
+.coll-content-wrapper.displayed{
 	display: block;
 }
-*[class*="coll-content"].before-collapsing, *[class*="coll-content"].before-collapsing{
+.coll-content-wrapper.before-collapsing{
 	position: absolute;
 	visibility: hidden;
 	display: block;
 }
-*[class*="coll-content"].collapsing, *[class*="coll-content"].collapsing{
+.coll-content-wrapper.collapsing{
 	position: static;
     height: 0;
     overflow: hidden;

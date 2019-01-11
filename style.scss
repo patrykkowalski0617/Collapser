@@ -15,9 +15,11 @@ $transition: .5s ease;
 
 *[class*="coll-btn"], *[class*="acc-btn"] { 
 	background: salmon;
+	.coll-btn-description{padding: $space1 $space3;}
 }
-*[class*="coll-conten"], *[class*="coll-content"]{
+.coll-content-wrapper{
 	background: darkcyan;
+	.coll-content{padding: $space1 $space3;}
 }
 
 *{ margin: 0; padding: 0; box-sizing: border-box;}

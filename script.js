@@ -1,11 +1,11 @@
-class CollapserMaster{
-	constructor(btn, content){
+class Collapser{
+	constructor(btn){
 		const tt = this;
-
+		
 		tt.qA = function(selector, origin = document){ return origin.querySelectorAll(selector) };
 		tt.q = function(selector, origin = document){ return origin.querySelector(selector) };
 		tt.btn = tt.qA(btn);
-		tt.content = content;
+		tt.content = '.coll-content-wrapper';
 		tt.findContent = function(el){
 			const wrapper = function(){return el.classList.contains('coll-wrapper')},
 			btn = function(){
@@ -17,10 +17,10 @@ class CollapserMaster{
 			};
 
 			if (wrapper()) {
-				return tt.q(content, el)
+				return tt.q(tt.content, el)
 			}
 			else if (btn()){
-				return tt.q(content, el.parentElement)
+				return tt.q(tt.content, el.parentElement)
 			}
 		};
 		tt.findWrapper = function(children){
@@ -68,15 +68,6 @@ class CollapserMaster{
 			}
 		};
 		tt.elConstHeight = [];
-	}
-}
-
-class Collapser extends CollapserMaster{
-	constructor(btn, content){
-		super(btn, content);
-
-		const tt = this;
-
 		tt.display = function(t){
 			const content = tt.findContent(t),
 			fromHiddenState = function(){
@@ -141,8 +132,8 @@ class Collapser extends CollapserMaster{
 }
 
 class CollapserHover extends Collapser{
-	constructor(btn, content){
-		super(btn, content);
+	constructor(btn){
+		super(btn);
 
 		const tt = this;
 
@@ -159,8 +150,8 @@ class CollapserHover extends Collapser{
 }
 
 class CollapserClick extends Collapser{
-	constructor(btn, content){
-		super(btn, content);
+	constructor(btn){
+		super(btn);
 		
 		const tt = this;
 
@@ -171,8 +162,8 @@ class CollapserClick extends Collapser{
 }
 
 class AccordionHover extends Collapser{
-	constructor(btn, content){
-		super(btn, content)
+	constructor(btn){
+		super(btn)
 
 		const tt = this;
 
@@ -194,8 +185,8 @@ class AccordionHover extends Collapser{
 }
 
 class AccordionClick extends Collapser{
-	constructor(btn, content){
-		super(btn, content)
+	constructor(btn){
+		super(btn)
 
 		const tt = this;
 		
@@ -207,7 +198,7 @@ class AccordionClick extends Collapser{
 	}
 }
 
-const collapserHover = new CollapserHover('.coll-btn-hover', '.coll-content');
-const collapserClick = new CollapserClick('.coll-btn-click', '.coll-content');
-const accordionHover = new AccordionHover('.acc-btn-hover', '.coll-content');
-const accordionClick = new AccordionClick('.acc-btn-click', '.coll-content');
+const collapserHover = new CollapserHover('.coll-btn-hover');
+const collapserClick = new CollapserClick('.coll-btn-click');
+const accordionHover = new AccordionHover('.acc-btn-hover');
+const accordionClick = new AccordionClick('.acc-btn-click');
