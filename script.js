@@ -5,9 +5,9 @@ class Collapser{
 		tt.qA = function(selector, origin = document){ return origin.querySelectorAll(selector) };
 		tt.q = function(selector, origin = document){ return origin.querySelector(selector) };
 		tt.btn = tt.qA(btn);
-		tt.content = '.coll-content-wrapper';
-		tt.findContent = function(el){
-			const wrapper = function(){return el.classList.contains('coll-wrapper')},
+		tt.findCollContentFromThis = function(el){
+			const contentClass = '.coll-content-wrapper',
+			wrapper = function(){return el.classList.contains('coll-wrapper')},
 			btn = function(){
 				const classL = el.classList
 				for (let i = 0; i < classL.length; i++) {
@@ -17,18 +17,11 @@ class Collapser{
 			};
 
 			if (wrapper()) {
-				return tt.q(tt.content, el)
+				return tt.q(contentClass, el)
 			}
 			else if (btn()){
-				return tt.q(tt.content, el.parentElement)
+				return tt.q(contentClass, el.parentElement)
 			}
-		};
-		tt.findWrapper = function(children){
-			let wrappers = []
-			for (var i = 0; i < children.length; i++) {
-				wrappers.push(children[i].parentElement)
-			}
-			return wrappers;
 		};
 		tt.addListener = function(el, eventType, f){
 			for (var i = 0; i < el.length; i++) {
@@ -69,7 +62,7 @@ class Collapser{
 		};
 		tt.elConstHeight = [];
 		tt.display = function(t){
-			const content = tt.findContent(t),
+			const content = tt.findCollContentFromThis(t),
 			fromHiddenState = function(){
 				tt.elConstHeight = []
 				tt.elConstHeight.push(tt.getElProperty.height(content));
@@ -107,7 +100,7 @@ class Collapser{
 				tt.collapsing.addCollapsing(content, 0, 'remove');
 			},
 			currentContent(t, onDisplayedOnly = false){
-				const content = tt.findContent(t);
+				const content = tt.findCollContentFromThis(t);
 				this.specifiedContent(t, onDisplayedOnly, content);
 			},
 			nastedContent(t, onDisplayedOnly = false){
@@ -116,7 +109,7 @@ class Collapser{
 			}
 		}
 		tt.toggle = function(t){
-			const content = tt.findContent(t);
+			const content = tt.findCollContentFromThis(t);
 			if(!content.classList.contains('displayed') && !content.classList.contains('collapsing')) {
 				tt.display(t)
 			}
@@ -135,12 +128,20 @@ class CollapserHover extends Collapser{
 	constructor(btn){
 		super(btn);
 
-		const tt = this;
+		const tt = this,
+		wrappers = function(){
+			const children = tt.btn;
+			let wrappers = [];
+			for (var i = 0; i < children.length; i++) {
+				wrappers.push(children[i].parentElement)
+			}
+			return wrappers;
+		};;
 
 		tt.addListener(tt.btn, 'mouseenter', function(){
 			tt.display(this);
 		});
-		tt.addListener(tt.findWrapper(tt.btn), 'mouseleave', function(){
+		tt.addListener(wrappers(), 'mouseleave', function(){
 			tt.hide.currentContent(this);
 		});
 		tt.addListener(tt.btn, 'touchend', function(){
@@ -168,7 +169,7 @@ class AccordionHover extends Collapser{
 		const tt = this;
 
 		tt.addListener(tt.btn, 'mouseenter', function(){
-			const content = tt.findContent(this);
+			const content = tt.findCollContentFromThis(this);
 			if(!content.classList.contains('displayed') && !content.classList.contains('collapsing')) {
 				const content = tt.q('.displayed', this.parentElement.parentElement),
 				collapsingContent = Array.from(tt.qA('.collapsing', this.parentElement.parentElement))
