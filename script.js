@@ -12,7 +12,9 @@ class Collapser{
 				const classL = el.classList
 				for (let i = 0; i < classL.length; i++) {
 					if (classL.item(i).includes('coll-btn')
-						|| classL.item(i).includes('acc-btn')) { return el; }
+						|| classL.item(i).includes('acc-btn')
+						|| classL.item(i).includes('nav-btn')
+						) { return el; }
 				}
 			};
 
@@ -22,6 +24,14 @@ class Collapser{
 			else if (btn()){
 				return tt.q(contentClass, el.parentElement)
 			}
+		};
+		tt.wrappers = function(){
+			const children = tt.btn;
+			let wrappers = [];
+			for (var i = 0; i < children.length; i++) {
+				wrappers.push(children[i].parentElement)
+			}
+			return wrappers;
 		};
 		tt.addListener = function(el, eventType, f){
 			for (var i = 0; i < el.length; i++) {
@@ -110,6 +120,7 @@ class Collapser{
 		}
 		tt.toggle = function(t){
 			const content = tt.findCollContentFromThis(t);
+			console.log(content)
 			if(!content.classList.contains('displayed') && !content.classList.contains('collapsing')) {
 				tt.display(t)
 			}
@@ -128,20 +139,12 @@ class CollapserHover extends Collapser{
 	constructor(btn){
 		super(btn);
 
-		const tt = this,
-		wrappers = function(){
-			const children = tt.btn;
-			let wrappers = [];
-			for (var i = 0; i < children.length; i++) {
-				wrappers.push(children[i].parentElement)
-			}
-			return wrappers;
-		};;
+		const tt = this;		
 
 		tt.addListener(tt.btn, 'mouseenter', function(){
 			tt.display(this);
 		});
-		tt.addListener(wrappers(), 'mouseleave', function(){
+		tt.addListener(tt.wrappers(), 'mouseleave', function(){
 			tt.hide.currentContent(this);
 		});
 		tt.addListener(tt.btn, 'touchend', function(){
@@ -199,7 +202,34 @@ class AccordionClick extends Collapser{
 	}
 }
 
-const collapserHover = new CollapserHover('.coll-btn-hover');
-const collapserClick = new CollapserClick('.coll-btn-click');
-const accordionHover = new AccordionHover('.acc-btn-hover');
-const accordionClick = new AccordionClick('.acc-btn-click');
+class Navigation extends Collapser{
+	constructor(btn){
+		super(btn);
+
+		const tt = this,
+		pageWidth = function(){return window.innerWidth},
+		breakPoint = 1024;
+
+		tt.addListener(tt.btn, 'mouseenter', function(){
+			if(pageWidth() >= breakPoint){
+				tt.display(this);
+			}
+		});
+		tt.addListener(tt.wrappers(), 'mouseleave', function(){
+			if(pageWidth() >= breakPoint){
+				tt.hide.currentContent(this);
+			}
+		});
+		tt.addListener(tt.btn, 'click', function(){
+			if(pageWidth() < breakPoint){
+				tt.toggle(this);
+			}
+		});
+	}
+}
+
+const collapserHover = new CollapserHover('.coll-btn-hover'),
+collapserClick = new CollapserClick('.coll-btn-click'),
+accordionHover = new AccordionHover('.acc-btn-hover'),
+accordionClick = new AccordionClick('.acc-btn-click'),
+navigation = new Navigation('.nav-btn');

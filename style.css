@@ -303,7 +303,7 @@ section {
 *[class*="coll-wrapper"] {
   position: relative; }
 
-*[class*="coll-btn"], *[class*="acc-btn"] {
+*[class*="coll-btn"], *[class*="acc-btn"], *[class*="nav-btn"] {
   cursor: pointer; }
 
 *[class*="coll-content-wrapper"] {
@@ -325,6 +325,78 @@ section {
   -webkit-transition: 0.5s ease;
   transition: 0.5s ease; }
 
+body {
+  margin-top: 70px; }
+
+header {
+  background: #eee;
+  text-transform: uppercase;
+  border-bottom: 2px solid;
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 70px; }
+  header #burger {
+    width: 40px;
+    height: 40px;
+    background: black;
+    position: absolute;
+    top: 10px;
+    right: 10px; }
+  header nav {
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    border-bottom: 2px solid;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0; }
+    header nav.coll-content-wrapper.collapsing {
+      position: absolute; }
+    header nav ol, header nav ul {
+      list-style-type: none; }
+    header nav ol a {
+      display: block;
+      height: 100%; }
+    header nav ul {
+      border-top: 1px solid;
+      border-bottom: 1px solid; }
+    header nav li {
+      line-height: 40px; }
+
+@media (min-width: 1024px) {
+  header .coll-content-wrapper.collapsing {
+    position: absolute; }
+  header nav.before-collapsing {
+    visibility: visible; }
+  header nav.coll-content-wrapper.collapsing {
+    height: auto !important;
+    overflow: unset; }
+  header .container {
+    position: relative;
+    height: 100%; }
+    header .container #burger {
+      display: none; }
+    header .container nav {
+      background: none;
+      top: 0;
+      right: 0.7rem;
+      left: auto;
+      border: none;
+      display: block; }
+      header .container nav ol > li {
+        line-height: 70px;
+        position: relative;
+        display: inline-block;
+        margin-left: 0.7rem; }
+      header .container nav ul {
+        position: absolute;
+        border: 1px solid;
+        left: 0;
+        width: 140px; } }
 *[class*="coll-btn"], *[class*="acc-btn"] {
   background: salmon; }
   *[class*="coll-btn"] .coll-btn-description, *[class*="acc-btn"] .coll-btn-description {

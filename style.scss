@@ -14,6 +14,100 @@ $transition: .5s ease;
 @import 'grid';
 @import 'collapser';
 
+body{ margin-top: 70px }
+header{
+		background: #eee;
+	    text-transform: uppercase;
+	    border-bottom: 2px solid;
+	    position: fixed;
+	    z-index: 10;
+	    top: 0;
+	    right: 0;
+	    left: 0;
+	    height: 70px;
+	#burger{
+		width: 40px;
+	    height: 40px;
+	    background: black;
+	    position: absolute;
+	    top: 10px;
+	    right: 10px;
+	}
+	nav{
+		font-size: $space3;
+		font-weight: 700;
+		text-align: center;
+		border-bottom: 2px solid;
+		position: absolute;
+		top: 70px;
+		left: 0;
+		right: 0;
+		&.coll-content-wrapper.collapsing{
+			position: absolute;
+		}
+		ol, ul{
+			list-style-type: none
+		}
+		ol{
+			a{
+				display: block;
+				height: 100%;
+			}
+		}
+		ul{
+			border-top: 1px solid;
+			border-bottom: 1px solid;
+		}
+		li{
+			line-height: 40px;
+		}
+	}
+}
+
+@media(min-width: $breakL){
+	header{
+		.coll-content-wrapper.collapsing{
+	    	position: absolute;
+	    }
+	    nav.before-collapsing{
+	    	visibility: visible;
+	    }
+	   	nav.coll-content-wrapper.collapsing{
+	    	height: auto !important; // !important is required for IE
+	    	overflow: unset;
+	    }
+		.container{
+			position: relative;
+			height: 100%;
+			#burger{
+				display: none;
+			}
+			nav{
+				background: none;
+				top: 0;
+				right: $space2;
+				left: auto;
+				border: none;
+				display: block;
+				ol {
+					> li{
+						line-height: 70px;
+						position: relative;
+						display: inline-block;
+						margin-left: $space2;
+					}
+				}
+				ul{
+					position: absolute;
+					border: 1px solid;
+					left: 0;
+					width: 140px;
+				}
+			}
+		}
+	}
+}
+
 *[class*="coll-btn"], *[class*="acc-btn"] { 
 	background: salmon;
 	.coll-btn-description{padding: $space1 $space3;}
