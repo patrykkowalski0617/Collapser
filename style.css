@@ -329,15 +329,13 @@ body {
   margin-top: 70px; }
 
 header {
-  background: #eee;
-  text-transform: uppercase;
-  border-bottom: 2px solid;
   position: fixed;
-  z-index: 10;
+  z-index: 1000;
   top: 0;
   right: 0;
   left: 0;
-  height: 70px; }
+  height: 70px;
+  border-bottom: 2px solid; }
   header #burger {
     width: 40px;
     height: 40px;
@@ -346,8 +344,6 @@ header {
     top: 10px;
     right: 10px; }
   header nav {
-    font-size: 1.3rem;
-    font-weight: 700;
     text-align: center;
     border-bottom: 2px solid;
     position: absolute;
@@ -383,7 +379,6 @@ header {
     header .container nav {
       background: none;
       top: 0;
-      right: 0.7rem;
       left: auto;
       border: none;
       display: block; }
@@ -397,6 +392,13 @@ header {
         border: 1px solid;
         left: 0;
         width: 140px; } }
+header {
+  background: #eee;
+  text-transform: uppercase; }
+  header nav {
+    font-size: 1.3rem;
+    font-weight: 700; }
+
 *[class*="coll-btn"], *[class*="acc-btn"] {
   background: salmon; }
   *[class*="coll-btn"] .coll-btn-description, *[class*="acc-btn"] .coll-btn-description {

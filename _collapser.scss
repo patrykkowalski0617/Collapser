@@ -13,8 +13,97 @@
 }
 .coll-content-wrapper.collapsing{
 	position: static;
-    height: 0;
-    overflow: hidden;
-    display: block;
-    transition: $transition;
+	height: 0;
+	overflow: hidden;
+	display: block;
+	transition: $transition;
+}
+
+body{ margin-top: $headerHeight }
+header{
+		position: fixed;
+		z-index: 1000;
+		top: 0;
+		right: 0;
+		left: 0;
+		height: $headerHeight;
+		border-bottom: 2px solid;
+	#burger{
+		width: 40px;
+		height: 40px;
+		background: black;
+		position: absolute;
+		top: 10px;
+		right: 10px;
+	}
+	nav{
+		text-align: center;
+		border-bottom: 2px solid;
+		position: absolute;
+		top: $headerHeight;
+		left: 0;
+		right: 0;
+		&.coll-content-wrapper.collapsing{
+			position: absolute;
+		}
+		ol, ul{
+			list-style-type: none
+		}
+		ol{
+			a{
+				display: block;
+				height: 100%;
+			}
+		}
+		ul{
+			border-top: 1px solid;
+			border-bottom: 1px solid;
+		}
+		li{
+			line-height: 40px;
+		}
+	}
+}
+
+@media(min-width: $breakL){
+	header{
+		.coll-content-wrapper.collapsing{
+			position: absolute;
+		}
+		nav.before-collapsing{
+			visibility: visible;
+		}
+		nav.coll-content-wrapper.collapsing{
+			height: auto !important; // !important is required for IE
+			overflow: unset;
+		}
+		.container{
+			position: relative;
+			height: 100%;
+			#burger{
+				display: none;
+			}
+			nav{
+				background: none;
+				top: 0;
+				left: auto;
+				border: none;
+				display: block;
+				ol {
+					> li{
+						line-height: $headerHeight;
+						position: relative;
+						display: inline-block;
+						margin-left: $space2;
+					}
+				}
+				ul{
+					position: absolute;
+					border: 1px solid;
+					left: 0;
+					width: 140px;
+				}
+			}
+		}
+	}
 }

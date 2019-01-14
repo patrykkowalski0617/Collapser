@@ -120,7 +120,7 @@ class Collapser{
 		}
 		tt.toggle = function(t){
 			const content = tt.findCollContentFromThis(t);
-			console.log(content)
+			
 			if(!content.classList.contains('displayed') && !content.classList.contains('collapsing')) {
 				tt.display(t)
 			}
