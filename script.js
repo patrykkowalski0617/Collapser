@@ -165,39 +165,49 @@ class CollapserClick extends Collapser{
 	}
 }
 
-class AccordionHover extends Collapser{
+class Accordion extends Collapser{
+	constructor(btn){
+		super(btn)
+
+		const tt = this;
+
+		tt.displayOne = function(t){
+			const content = tt.findCollContentFromThis(t);
+			if(!content.classList.contains('displayed') && !content.classList.contains('collapsing')) {
+				const content = tt.q('.displayed', t.parentElement.parentElement),
+				collapsingContent = Array.from(tt.qA('.collapsing', t.parentElement.parentElement))
+				
+				if (!collapsingContent.length) {
+					tt.display(t)
+				}
+
+				tt.hide.specifiedContent(t, true, content)
+			}
+		}
+	}
+}
+
+class AccordionHover extends Accordion{
 	constructor(btn){
 		super(btn)
 
 		const tt = this;
 
 		tt.addListener(tt.btn, 'mouseenter', function(){
-			const content = tt.findCollContentFromThis(this);
-			if(!content.classList.contains('displayed') && !content.classList.contains('collapsing')) {
-				const content = tt.q('.displayed', this.parentElement.parentElement),
-				collapsingContent = Array.from(tt.qA('.collapsing', this.parentElement.parentElement))
-				
-				if (!collapsingContent.length) {
-					tt.display(this)
-				}
-
-				tt.hide.specifiedContent(this, true, content)
-			}
+			tt.displayOne(this)
 		});
 		
 	}
 }
 
-class AccordionClick extends Collapser{
+class AccordionClick extends Accordion{
 	constructor(btn){
 		super(btn)
 
 		const tt = this;
 		
 		tt.addListener(tt.btn, 'click', function(){
-			const contentDisplayed = tt.q('.displayed', this.parentElement.parentElement);
-			tt.hide.specifiedContent(this, true, contentDisplayed)
-			tt.display(this);
+			tt.displayOne(this)
 		});
 	}
 }
