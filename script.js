@@ -33,9 +33,9 @@ class Collapser{
 			}
 			return wrappers;
 		};
-		tt.addListener = function(el, eventType, f){
+		tt.addListener = function(el, eventType, f, useCapture){
 			for (var i = 0; i < el.length; i++) {
-				el[i].addEventListener(eventType, f)
+				el[i].addEventListener(eventType, f, useCapture)
 			}
 		};
 		tt.getElProperty = {
@@ -104,6 +104,7 @@ class Collapser{
 			specifiedContent(t, onDisplayedOnly, content){
 				const height = tt.getElProperty.height(content, false);
 				if (!onDisplayedOnly && !tt.q('.displayed', t)) {
+					console.log('clear ' + tt.ir)
 					clearTimeout(tt.collapsing.timeoutRemoveHeight);
 				}
 				content.style.height = height + 'px';
@@ -226,7 +227,7 @@ class Navigation extends Collapser{
 			}
 		});
 		tt.addListener(tt.wrappers(), 'mouseleave', function(){
-			if(pageWidth() >= breakPoint){
+			if(pageWidth() >= breakPoint && this.classList.contains('coll-nasted')){
 				tt.hide.currentContent(this);
 			}
 		});

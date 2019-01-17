@@ -71,13 +71,6 @@ header{
 		.coll-content-wrapper.collapsing{
 			position: absolute;
 		}
-		nav.before-collapsing{
-			visibility: visible;
-		}
-		nav.coll-content-wrapper.collapsing{
-			height: auto !important; // !important is required for IE
-			overflow: unset;
-		}
 		.container{
 			position: relative;
 			height: 100%;

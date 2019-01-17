@@ -369,11 +369,6 @@ header {
 @media (min-width: 1024px) {
   header .coll-content-wrapper.collapsing {
     position: absolute; }
-  header nav.before-collapsing {
-    visibility: visible; }
-  header nav.coll-content-wrapper.collapsing {
-    height: auto !important;
-    overflow: unset; }
   header .container {
     position: relative;
     height: 100%; }
