@@ -340,12 +340,30 @@ header {
   height: 70px;
   border-bottom: 2px solid; }
   header #burger {
-    width: 40px;
-    height: 40px;
-    background: black;
-    position: absolute;
-    top: 10px;
-    right: 10px; }
+    float: right; }
+    header #burger .burger-item {
+      float: left;
+      line-height: 70px;
+      height: 70px;
+      margin-left: 10px; }
+    header #burger .burger-description {
+      font-size: .8rem;
+      margin: 0; }
+    header #burger .burger-bars {
+      position: relative;
+      width: 40px; }
+      header #burger .burger-bars .burger-bar {
+        position: absolute;
+        right: 0;
+        left: 0;
+        height: 4px;
+        background-color: #000;
+        border-radius: 2px;
+        -webkit-box-shadow: 0px 10px, 0px -10px;
+                box-shadow: 0px 10px, 0px -10px;
+        top: 50%;
+        -webkit-transform: translate(0, -50%);
+                transform: translate(0, -50%); }
   header nav {
     text-align: center;
     border-bottom: 2px solid;
