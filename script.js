@@ -104,7 +104,6 @@ class Collapser{
 			specifiedContent(t, onDisplayedOnly, content){
 				const height = tt.getElProperty.height(content, false);
 				if (!onDisplayedOnly && !tt.q('.displayed', t)) {
-					console.log('clear ' + tt.ir)
 					clearTimeout(tt.collapsing.timeoutRemoveHeight);
 				}
 				content.style.height = height + 'px';
@@ -214,12 +213,11 @@ class AccordionClick extends Accordion{
 }
 
 class Navigation extends Collapser{
-	constructor(btn){
+	constructor(btn, breakPoint){
 		super(btn);
 
 		const tt = this,
-		pageWidth = function(){return window.innerWidth},
-		breakPoint = 1024;
+		pageWidth = function(){return window.innerWidth};
 
 		tt.addListener(tt.btn, 'mouseenter', function(){
 			if(pageWidth() >= breakPoint){
@@ -243,4 +241,4 @@ const collapserHover = new CollapserHover('.coll-btn-hover'),
 collapserClick = new CollapserClick('.coll-btn-click'),
 accordionHover = new AccordionHover('.acc-btn-hover'),
 accordionClick = new AccordionClick('.acc-btn-click'),
-navigation = new Navigation('.nav-btn');
+navigation = new Navigation('.nav-btn', 1024);
