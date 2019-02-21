@@ -148,9 +148,6 @@
 			tt.addListener(tt.wrappers(), 'mouseleave', function(){
 				tt.hide.currentContent(this);
 			});
-			tt.addListener(tt.btn, 'touchend', function(){
-				tt.toggle(this);
-			});
 		}
 	}
 
