@@ -50,7 +50,7 @@
 					const st = window.getComputedStyle(el, null);
 					return parseFloat(st.getPropertyValue('transition-duration')) * 1000;
 				}
-			},
+			};
 			tt.collapsing = {
 				timeoutAddHeight: null,
 				timeoutRemoveHeight: null,
@@ -118,7 +118,7 @@
 					const content = tt.q('.coll-nasted .displayed', t.parentElement);
 					if(content){ this.specifiedContent(t, onDisplayedOnly, content) }
 				}
-			}
+			};
 			tt.toggle = function(t){
 				const content = tt.findCollContentFromThis(t);
 				
